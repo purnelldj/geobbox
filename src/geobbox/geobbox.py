@@ -20,7 +20,7 @@ if (sys.version_info.major, sys.version_info.minor) < (3, 10):
 else:
     from typing import Iterator, Optional, Self, TypeAlias
 
-__all__ = ["WGS84", "BoundingBox"]
+__all__ = ["WGS84", "GeoBoundingBox"]
 
 
 Coordinate: TypeAlias = tuple[float, float]
@@ -32,7 +32,7 @@ WGS84 = CRS.from_epsg(4326)
 
 
 @dataclass(frozen=True)
-class BoundingBox:
+class GeoBoundingBox:
     """A georeferenced bounding box.
 
     This is a Coordinate Reference System (crs) and the bounding box's left, bottom, right and top borders, expressed in that CRS.
@@ -42,7 +42,7 @@ class BoundingBox:
     left, bottom, right, top : float
         The borders of the bounding box.
     crs : CRS
-        The CRS of the BoundingBox. Defaults to WGS84.
+        The CRS of the GeoBoundingBox. Defaults to WGS84.
     """
 
     left: float
@@ -54,11 +54,11 @@ class BoundingBox:
     def __post_init__(self):
         if self.left > self.right:
             raise ValueError(
-                f"BoundingBox is initialized with {self.left=} > {self.right=}"
+                f"GeoBoundingBox is initialized with {self.left=} > {self.right=}"
             )
         if self.bottom > self.top:
             raise ValueError(
-                f"BoundingBox is initialized with {self.bottom=} > {self.top=}"
+                f"GeoBoundingBox is initialized with {self.bottom=} > {self.top=}"
             )
 
     def __contains__(self, point: Coordinate) -> bool:
@@ -75,7 +75,7 @@ class BoundingBox:
 
         Returns
         -------
-        bbox: BoundingBox
+        bbox: GeoBoundingBox
             The intersection of the bboxes expressed in the first one's CRS.
         """
         if other.crs != self.crs:
@@ -174,7 +174,7 @@ class BoundingBox:
 
         Parameters
         ----------
-        other : BoundingBox
+        other : GeoBoundingBox
             An other bounding box, in the same CRS.
 
         Returns
@@ -192,7 +192,7 @@ class BoundingBox:
 
         Parameters
         ----------
-        other : BoundingBox
+        other : GeoBoundingBox
             An other bounding box, in the same CRS.
 
         Returns
@@ -246,7 +246,7 @@ class BoundingBox:
 
         Returns
         -------
-        BoundingBox
+        GeoBoundingBox
             The buffered bounding box.
         """
         if buff < 0:
@@ -268,7 +268,7 @@ class BoundingBox:
 
         Returns
         -------
-        BoundingBox
+        GeoBoundingBox
             The unbuffered bounding box.
 
         """
@@ -359,11 +359,11 @@ class BoundingBox:
 
         Returns
         -------
-        bbox: BoundingBox
+        bbox: GeoBoundingBox
             Bounding box in `dst_crs`.
         """
         if not self.is_not_empty:
-            log.warn("Transforming an empty BoundingBox")
+            log.warn("Transforming an empty GeoBoundingBox")
             assert False
             return self.__class__(0, 0, 0, 0, dst_crs)
         left, bottom, right, top = rio.warp.transform_bounds(
@@ -406,7 +406,7 @@ class BoundingBox:
     @classmethod
     def from_latlon(cls, cmin: Coordinate, cmax: Coordinate, crs: CRS = WGS84) -> Self:
         """Convert a bounding box of the form (lat_min, lon_min), (lat_max, lon_max),
-        as expected by folium, to a BoundingBox.
+        as expected by folium, to a GeoBoundingBox.
 
         Parameters
         ----------
@@ -419,7 +419,7 @@ class BoundingBox:
 
         Returns
         -------
-        BoundingBox
+        GeoBoundingBox
         """
         return cls(left=cmin[1], right=cmax[1], bottom=cmin[0], top=cmax[0], crs=crs)
 
@@ -434,7 +434,7 @@ class BoundingBox:
 
         Returns
         -------
-        BoundingBox
+        GeoBoundingBox
         """
         coordinates = np.array(image.geometry().bounds().coordinates().getInfo())
         return cls(
@@ -445,19 +445,19 @@ class BoundingBox:
         )
 
     @classmethod
-    def from_rio(cls, bbox: rio.coords.BoundingBox, crs: CRS = WGS84) -> Self:
+    def from_rio(cls, bbox: rio.coords.GeoBoundingBox, crs: CRS = WGS84) -> Self:
         """Get a bounding box from a `rasterio` bounding box.
 
         Parameters
         ----------
-        bbox : rio.coords.BoundingBox
+        bbox : rio.coords.GeoBoundingBox
             A rasterio bounding box object.
         crs : CRS (optional)
             The CRS in which the bbox is expressed. Default is WGS84.
 
         Returns
         -------
-        BoundingBox
+        GeoBoundingBox
         """
         return cls(
             left=bbox.left, bottom=bbox.bottom, right=bbox.right, top=bbox.top, crs=crs
@@ -474,7 +474,7 @@ class BoundingBox:
 
         Returns
         -------
-        BoundingBox
+        GeoBoundingBox
             The bounding box of the geodata contained in the file.
         """
         with rio.open(path) as data:
@@ -491,7 +491,7 @@ class BoundingBox:
 
         Returns
         -------
-        BoundingBox
+        GeoBoundingBox
             The bounding box expressed in WGS84.
         """
         left = (utm.zone - 31) * 6
