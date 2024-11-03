@@ -35,16 +35,14 @@ WGS84 = CRS.from_epsg(4326)
 class BoundingBox:
     """A georeferenced bounding box.
 
-    This is a Coordinate Reference System (crs) and the bounding box's four borders, expressed in that CRS.
+    This is a Coordinate Reference System (crs) and the bounding box's left, bottom, right and top borders, expressed in that CRS.
 
     Attributes
     ----------
-    left : float
-    bottom : float
-    right : float
-    top : float
-    crs : CRS, defaults to WGS84
-
+    left, bottom, right, top : float
+        The borders of the bounding box.
+    crs : CRS
+        The CRS of the BoundingBox. Defaults to WGS84.
     """
 
     left: float
@@ -273,7 +271,6 @@ class BoundingBox:
         BoundingBox
             The unbuffered bounding box.
 
-        ..available:: 0.2.2
         """
         if buff < 0:
             raise ValueError(f"Invalid buffer value {buff}. Expected a positive value.")

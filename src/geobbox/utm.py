@@ -24,7 +24,6 @@ _UTM_ZONE_LETTERS = tuple(
 )
 
 
-
 @dataclass(frozen=True, eq=True)
 class UTM:
     """Class to represent a UTM zone.
@@ -38,7 +37,7 @@ class UTM:
 
     See also
     --------
-    https://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system
+    `Universal Transverse Mercator <https://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system>`_
 
     """
 
