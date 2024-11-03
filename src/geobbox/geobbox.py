@@ -137,6 +137,11 @@ class BoundingBox:
         return (self.top - self.bottom) * (self.right - self.left)
 
     @property
+    def hypotenuse(self) -> float:
+        """Length of the bounding box hypotenuse."""
+        return np.sqrt((self.right - self.left) ** 2 + (self.top - self.bottom) ** 2)
+
+    @property
     def is_empty(self) -> bool:
         """Check if a bounding box has an empty interior."""
         return bool(
