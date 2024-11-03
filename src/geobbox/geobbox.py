@@ -10,6 +10,7 @@ import numpy as np
 import rasterio as rio
 import shapely
 from rasterio.crs import CRS
+import rasterio.warp as warp
 
 from .utm import _UTM_ZONE_LETTERS, UTM
 
@@ -366,7 +367,7 @@ class GeoBoundingBox:
             log.warn("Transforming an empty GeoBoundingBox")
             assert False
             return self.__class__(0, 0, 0, 0, dst_crs)
-        left, bottom, right, top = rio.warp.transform_bounds(
+        left, bottom, right, top = warp.transform_bounds(
             self.crs, dst_crs, self.left, self.bottom, self.right, self.top
         )
         return self.__class__(
