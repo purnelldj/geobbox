@@ -333,15 +333,7 @@ class BoundingBox:
         Georeferencement information is lost. The shapely polygon is just a mathematical object.
         """
         bbox = self.transform(WGS84) if not in_native_crs else self
-        return shapely.Polygon(
-            [
-                (bbox.left, bbox.top),
-                (bbox.left, bbox.bottom),
-                (bbox.right, bbox.bottom),
-                (bbox.right, bbox.top),
-                (bbox.left, bbox.top),
-            ],
-        )
+        return shapely.box(bbox.left, bbox.bottom, bbox.right, bbox.top)
 
     def to_latlon(self) -> tuple[Coordinate, Coordinate]:
         """Convert a bounding box to a tuple of the form
@@ -377,14 +369,11 @@ class BoundingBox:
             log.warn("Transforming an empty BoundingBox")
             assert False
             return self.__class__(0, 0, 0, 0, dst_crs)
-        ys, xs = zip(self.ll, self.lr, self.ul, self.ur)
-        xs, ys = rio.warp.transform(self.crs, dst_crs, xs, ys)
+        left, bottom, right, top = rio.warp.transform_bounds(
+            self.crs, dst_crs, self.left, self.bottom, self.right, self.top
+        )
         return self.__class__(
-            left=min(xs),
-            bottom=min(ys),
-            right=max(xs),
-            top=max(ys),
-            crs=dst_crs,
+            left=left, bottom=bottom, right=right, top=top, crs=dst_crs
         )
 
     def shape(self, scale: int) -> tuple[int, int]:
