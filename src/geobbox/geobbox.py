@@ -445,12 +445,12 @@ class GeoBoundingBox:
         )
 
     @classmethod
-    def from_rio(cls, bbox: rio.coords.GeoBoundingBox, crs: CRS = WGS84) -> Self:
+    def from_rio(cls, bbox: rio.coords.BoundingBox, crs: CRS = WGS84) -> Self:
         """Get a bounding box from a `rasterio` bounding box.
 
         Parameters
         ----------
-        bbox : rio.coords.GeoBoundingBox
+        bbox : rio.coords.BoundingBox
             A rasterio bounding box object.
         crs : CRS (optional)
             The CRS in which the bbox is expressed. Default is WGS84.
