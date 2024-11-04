@@ -11,6 +11,10 @@ Each release can have sections: "Added", "Changed", "Deprecated", "Removed", "Fi
 
 ## pre-release
 
+### Added
+
+- Added `GeoBoundingBox.__iter__`
+
 ### Fixed
 
 - `rio.coords.GeoBoundingBox` should be `rio.coords.BoundingBox`
