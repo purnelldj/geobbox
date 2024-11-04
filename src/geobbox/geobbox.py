@@ -97,6 +97,17 @@ class GeoBoundingBox:
             crs=self.crs,
         )
 
+    def __iter__(self):
+        """Iter over a GeoBoundingBox as if a (left, bottom, right, top) tuple
+
+        .. versionadded:: 0.0.2
+
+        """
+        yield self.left
+        yield self.bottom
+        yield self.right
+        yield self.top
+
     @property
     def ul(self) -> Coordinate:
         """Compute the coordinate of the upper-left corner of a bounding box, in northing/easting format."""
