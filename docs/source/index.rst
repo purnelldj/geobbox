@@ -8,7 +8,7 @@ Welcome to GeoBbox's documentation!
 ====================================
 
 **GeoBbox** is a simple Python library to manipulate georeferenced bounding boxes.
-It integrates with popular GIS libraries (`gee`, `folium`, `rasterio`). 
+It integrates with popular GIS libraries (`gee`, `folium`, `rasterio`).
 
 .. note::
 

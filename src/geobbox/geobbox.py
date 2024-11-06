@@ -1,6 +1,7 @@
 """Utilities for working with different system of coordinates."""
 
 import logging
+import math
 import sys
 from dataclasses import dataclass
 from pathlib import Path
@@ -8,9 +9,9 @@ from pathlib import Path
 import ee
 import numpy as np
 import rasterio as rio
+import rasterio.warp as warp
 import shapely
 from rasterio.crs import CRS
-import rasterio.warp as warp
 
 from .utm import _UTM_ZONE_LETTERS, UTM
 
@@ -149,7 +150,7 @@ class GeoBoundingBox:
     @property
     def hypotenuse(self) -> float:
         """Length of the bounding box hypotenuse."""
-        return np.sqrt((self.right - self.left) ** 2 + (self.top - self.bottom) ** 2)
+        return math.sqrt((self.right - self.left) ** 2 + (self.top - self.bottom) ** 2)
 
     @property
     def is_empty(self) -> bool:
@@ -322,7 +323,7 @@ class GeoBoundingBox:
             proj=f"EPSG:{self.crs.to_epsg()}",
             evenOdd=False,
         )
-        return ee.Feature(geom, {}).geometry()
+        return ee.Feature(geom, {}).geometry()  # type: ignore[no-any-return]
 
     def to_shapely_polygon(self, in_native_crs: bool = False) -> shapely.Polygon:
         """Translate a bounding box as a ee.Geometry polygon.
@@ -404,8 +405,8 @@ class GeoBoundingBox:
 
     @classmethod
     def from_ee_geometry(cls, geometry: ee.Geometry) -> Self:
-        coordinates = np.array(geometry.bounds().getInfo()["coordinates"][0])
-        proj = geometry.projection().getInfo()["crs"]
+        coordinates = np.array(geometry.bounds().getInfo()["coordinates"][0])  # type: ignore[index]
+        proj = geometry.projection().getInfo()["crs"]  # type: ignore[index]
         crs = CRS.from_string(proj)
         return cls(
             left=coordinates[:, 0].min(),
