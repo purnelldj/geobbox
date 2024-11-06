@@ -9,7 +9,8 @@
 project = "GeoBbox"
 copyright = "2024, Gabriel Belouze"
 author = "Gabriel Belouze"
-release = "0.0.1"
+release = "0.0.2"
+version = "0.0.2"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -23,7 +24,7 @@ extensions = [
 ]
 
 templates_path = ["_templates"]
-exclude_patterns = []
+exclude_patterns: list[str] = []
 
 # -- Autodoc configuration ---------------------------------------------------
 autodoc_default_options = {

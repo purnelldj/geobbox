@@ -13,7 +13,7 @@
    ```
 3. Start a new branch off the main branch: `git switch -c my-new-branch main`
 4. Make your code changes
-5. It's nice to have common formatting options. We use `ruff`. Use the nice `pre-commit` tool to adhere to the repository formatting guidelines. 
+5. It's nice to have common formatting options. We use `ruff`. Use the nice `pre-commit` tool to adhere to the repository formatting guidelines.
 ```bash
    pip install pre-commit # install pre-commit
    pre-commit install   # install the hooks for the geobbox project
