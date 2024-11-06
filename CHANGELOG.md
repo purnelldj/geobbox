@@ -13,7 +13,9 @@ Each release can have sections: "Added", "Changed", "Deprecated", "Removed", "Fi
 ### Added
 
 - Added `GeoBoundingBox.__iter__` [97fda87](https://github.com/gbelouze/geobbox/commit/97fda87da1390e75a27b04a341235a627b9a8b1d)
+- Added `mypy` pre-commit hooks [ffa9ec6](https://github.com/gbelouze/geobbox/commit/ffa9ec6d15f1eddc28861cca12db9ce1d1788322)
 
 ### Fixed
 
 - `rio.coords.GeoBoundingBox` should be `rio.coords.BoundingBox` [552e0e9](https://github.com/gbelouze/geobbox/commit/552e0e9200f9546c5f2e1e2edb1414108fcf65d2)
+- Added `py.typed` to declare the package typed [c7988b5](https://github.com/gbelouze/geobbox/commit/c7988b532f495a09df8054e2849c576864d56eb3)
