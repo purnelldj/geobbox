@@ -24,7 +24,6 @@ dynamic = ["version"]
 dependencies = [
     "earthengine-api",
     "numpy",
-    "rasterio",
     "shapely>=2.0.6",
     "utm"
 ]

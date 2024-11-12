@@ -7,3 +7,4 @@ dependencies:
 - libgdal>=3.7
 - gdal>=3.7
 - sphinx-rtd-theme
+- rasterio
